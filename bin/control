@@ -10,7 +10,9 @@ function start {
   if pid &>/dev/null; then
     warning "The server is already running."
   else
-    server $OPENSHIFT_HASKELL_IP $OPENSHIFT_HASKELL_PORT &
+    timestamp >>$OPENSHIFT_HASKELL_LOG_DIR/stdout.log
+    timestamp >>$OPENSHIFT_HASKELL_LOG_DIR/stderr.log
+    server $OPENSHIFT_HASKELL_IP $OPENSHIFT_HASKELL_PORT >>$OPENSHIFT_HASKELL_LOG_DIR/stdout.log 2>>$OPENSHIFT_HASKELL_LOG_DIR/stderr.log &
   fi
 }
 
@@ -22,6 +24,10 @@ function stop {
   else
     warning "The server is not running, nothing to stop."
   fi
+}
+
+function timestamp {
+  echo -e '\n'$(date)'\n'
 }
 
 case "$1" in
@@ -65,9 +71,7 @@ case "$1" in
              cabal build
              echo "marker: run_tests ..."
              log=$OPENSHIFT_HASKELL_LOG_DIR/tests.log
-             echo >>$log
-             date >>$log
-             echo >>$log
+             timestamp >>$log
              cabal test --log=$log
            fi
            cabal install

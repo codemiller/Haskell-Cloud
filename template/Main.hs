@@ -9,7 +9,7 @@ import System.Environment
 
 main = do sock <- bracketOnError
                      (getProtocolNumber "tcp" >>= socket AF_INET Stream)
-                     sClose
+                     close
                      (\sock -> do setSocketOption sock ReuseAddr 1
                                   [host,port] <- getArgs
                                   inet <- inet_addr host

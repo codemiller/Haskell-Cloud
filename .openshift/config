@@ -28,7 +28,7 @@ world-file: !openshift!world
 -- optimization: True
 library-for-ghci: False
 -- split-objs: False
-executable-stripping: True
+-- executable-stripping: True
 -- user-install: True
 -- package-db:
 -- flags:
